@@ -33,21 +33,24 @@ input,select,textarea{font:inherit;width:100%;box-sizing:border-box;padding:8px;
 .lg .card{text-align:right;background:rgba(16,20,16,.82);backdrop-filter:blur(6px);border-color:rgba(158,216,79,.25)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px;z-index:9}
 .cw{background:var(--c);border-radius:12px;padding:16px;width:100%;max-width:560px}
-.cert{background:#fdfdf8;color:#17231d;border:10px solid #086432;outline:2px solid #80bb08;outline-offset:-16px;padding:10px;text-align:center;position:relative;font-family:Georgia,'Times New Roman',serif}
+.cert{background:linear-gradient(135deg,#f8fdf8 0%,#eef8ee 100%);color:#1a2e1a;border:12px solid #0d5c2e;outline:3px solid #d4af37;outline-offset:-20px;padding:24px 16px;text-align:center;position:relative;font-family:'Cairo',Georgia,serif;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.cert:before{content:"";position:absolute;inset:8px;border:1px solid rgba(212,175,55,.4);pointer-events:none}
 .cb{border:1px solid #cdd9c3;padding:26px 18px;position:relative}
-.cert h1,.cert h2,.cert h3{color:#086432;margin:.25em}
-.cert h1{font-size:28px;border-bottom:2px solid #80bb08;display:inline-block;padding-bottom:6px}
-.cert p{margin:.3em;color:#3a4a3f}
-.cert .kicker{letter-spacing:3px;font-size:11px;color:#80bb08;font-weight:700;text-transform:uppercase}
-.cert .seal{position:absolute;top:14px;left:18px;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#9ed84f,#086432);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.cert .sig{margin-top:22px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 10px}
-.cert .sig div{text-align:center;font-size:12px;color:#3a4a3f}
-.cert .sig .line{width:130px;border-top:1px solid #888;margin-bottom:4px}
-.cert .corner{position:absolute;width:22px;height:22px;border:3px solid #80bb08}
-.cert .c1{top:4px;left:4px;border-left:3px solid #80bb08;border-top:3px solid #80bb08;border-right:0;border-bottom:0}
-.cert .c2{top:4px;right:4px;border-right:3px solid #80bb08;border-top:3px solid #80bb08;border-left:0;border-bottom:0}
-.cert .c3{bottom:4px;left:4px;border-left:3px solid #80bb08;border-bottom:3px solid #80bb08;border-right:0;border-top:0}
-.cert .c4{bottom:4px;right:4px;border-right:3px solid #80bb08;border-bottom:3px solid #80bb08;border-left:0;border-top:0}
+.cert h1,.cert h2,.cert h3{color:#0d5c2e;margin:.2em 0}
+.cert h1{font-size:32px;font-weight:700;letter-spacing:1px;border-bottom:3px double #d4af37;display:inline-block;padding:0 20px 8px}
+.cert h2{font-size:22px;color:#1a4a2e}
+.cert p{margin:.4em 0;color:#2c4a36;font-size:15px}
+.cert .kicker{letter-spacing:4px;font-size:12px;color:#d4af37;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.cert .seal{position:absolute;top:18px;left:22px;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#e8c547,#0d5c2e);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3);border:2px solid #fff}
+.cert .sig{margin-top:28px;display:flex;justify-content:space-around;align-items:flex-end;padding:0 8px}
+.cert .sig div{text-align:center;font-size:13px;color:#3a4a3f}
+.cert .sig .line{width:140px;border-top:1.5px solid #666;margin-bottom:6px}
+.cert .corner{position:absolute;width:28px;height:28px;border:3px solid #d4af37}
+.cert .c1{top:6px;left:6px;border-left:3px solid #d4af37;border-top:3px solid #d4af37;border-right:0;border-bottom:0}
+.cert .c2{top:6px;right:6px;border-right:3px solid #d4af37;border-top:3px solid #d4af37;border-left:0;border-bottom:0}
+.cert .c3{bottom:6px;left:6px;border-left:3px solid #d4af37;border-bottom:3px solid #d4af37;border-right:0;border-top:0}
+.cert .c4{bottom:6px;right:6px;border-right:3px solid #d4af37;border-bottom:3px solid #d4af37;border-left:0;border-top:0}
+.cert .watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);font-size:72px;color:rgba(13,92,46,.06);font-weight:700;pointer-events:none;white-space:nowrap}
 .qf{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:10px;font-size:13px}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--gb);color:var(--on);padding:8px 16px;border-radius:8px;z-index:20}
 .print-head{display:none}
@@ -126,7 +129,11 @@ function injectStaticCourses() {
       obj: 'فهم مبادئ GTD\nتطبيق خطوات Capture و Clarify و Organize و Reflect و Engage\nاستخدام قاعدة الدقيقتين والمراجعة الأسبوعية\nتحسين الإنتاجية في العمل الزراعي والإداري',
       lv: [0,1,2,3,4,5,6,7,8,9,10],
       pre: null,
-      m: [],
+      m: [
+        {id:'mgtd1', k:'pdf', t:'دليل منهجية GTD الكامل (مرجع)', u:'https://gettingthingsdone.com/wp-content/uploads/2014/10/Getting-Things-Done-The-Art-of-Stress-Free-Productivity.pdf'},
+        {id:'mgtd2', k:'link', t:'مقالات وموارد إضافية عن GTD', u:'https://gettingthingsdone.com/'},
+        {id:'mgtd3', k:'video', t:'فيديو تعريفي (جاهز للإضافة لاحقًا)', u:'https://www.youtube.com/watch?v=example'}
+      ],
       l: [
         {id:'gtd1', t:'المقدمة وهدف المنهج', c:'GTD ليس مجرد قائمة مهام. الهدف إخراج الالتزامات من الدماغ إلى نظام موثوق. عقلك مصمم للتفكير لا للتذكر كل شيء. الدوائر المفتوحة (Open Loops) تستهلك الذاكرة الذهنية المؤقتة (Psychic RAM).'},
         {id:'gtd2', t:'الخطوة 1: التقاط (Capture)', c:'اجمع كل الالتزامات والأفكار في "دلو" تثق أنك ستعالجه. فكرت فيها؟ اكتبها. استخدم Mind Sweep وقائمة المحفزات (Trigger List) لتفريغ كل شيء من رأسك.'},
@@ -161,7 +168,11 @@ function injectStaticCourses() {
       obj: 'تحسين مهارات القيادة والتواصل\nتفويض المهام بفعالية\nإدارة الوقت والاجتماعات\nحل النزاعات وبناء الفريق',
       lv: [3,4,5,6,7,8,9,10],
       pre: null,
-      m: [],
+      m: [
+        {id:'madm1', k:'pdf', t:'دليل المهارات الإدارية للمشرفين (مرجع)', u:'https://www.fao.org/3/i7995e/i7995e.pdf'},
+        {id:'madm2', k:'link', t:'موارد إضافية عن القيادة والتواصل', u:'https://www.mindtools.com/'},
+        {id:'madm3', k:'video', t:'فيديوهات وبودكاست (جاهزة للإضافة)', u:'https://www.youtube.com/watch?v=example'}
+      ],
       l: [
         {id:'adm1', t:'أساسيات القيادة الزراعية', c:'المشرف الناجح يوجه الفريق نحو أهداف واضحة، يتابع التنفيذ، ويوفر الدعم. ركز على النتائج لا على الحضور فقط.'},
         {id:'adm2', t:'التواصل الفعال', c:'استمع أكثر مما تتكلم. استخدم لغة واضحة، قدم ملاحظات بناءة، وتأكد من الفهم. الاجتماعات القصيرة المنتظمة أفضل من الطويلة.'},
@@ -188,10 +199,15 @@ function injectStaticCourses() {
       obj: 'تطبيق أفضل ممارسات الري والتسميد\nتحسين جودة التمور من خلال الخف والتلقيح\nمكافحة الآفات بشكل متكامل\nفهم احتياجات النخلة الغذائية',
       lv: [0,1,2,3,4,5,6,7,8,9,10],
       pre: null,
-      m: [],
+      m: [
+        {id:'mplm1', k:'pdf', t:'دليل FAO لزراعة النخيل (مرجع احترافي)', u:'https://www.fao.org/3/i7828e/i7828e.pdf'},
+        {id:'mplm2', k:'pdf', t:'إرشادات الري والتسميد للنخيل', u:'https://www.fao.org/3/i7828e/i7828e.pdf'},
+        {id:'mplm3', k:'link', t:'مواقع إرشادية زراعية إضافية', u:'https://www.fao.org/agriculture/crops/thematic-sitemap/theme/pests/en/'},
+        {id:'mplm4', k:'video', t:'فيديوهات عملية (جاهزة للإضافة لاحقًا)', u:'https://www.youtube.com/watch?v=example'}
+      ],
       l: [
-        {id:'plm1', t:'الري حسب الموسم والتربة', c:'في النمو: كل 7-10 أيام. في الشتاء: 15-20 يوم. استخدم التنقيط. راقب الرطوبة. التربة الرملية تحتاج ريًا أكثر.'},
-        {id:'plm2', t:'التسميد المتوازن', c:'نيتروجين في بداية النمو (فبراير-مارس). فوسفور في الخريف. بوتاسيوم قبل الحصاد. الكمية: 1-1.5 كجم نيتروجين للنخلة البالغة سنويًا مقسمة.'},
+        {id:'plm1', t:'الري حسب الموسم والتربة', c:'الري من أهم عوامل نجاح زراعة النخيل. في موسم النمو النشط (الربيع والصيف) يُفضل الري كل 7-10 أيام حسب نوع التربة ودرجة الحرارة. في الشتاء يُقلل الري إلى كل 15-20 يوم. التربة الرملية تحتاج ريًا أكثر تكرارًا من الطينية. يُفضل نظام الري بالتنقيط لتوفير المياه وتوزيعها بانتظام. راقب رطوبة التربة قبل كل ري لتجنب الإفراط أو النقص. الإفراط في الري يسبب تعفن الجذور وانتشار الأمراض.'},
+        {id:'plm2', t:'التسميد المتوازن', c:'التسميد المتوازن ضروري للنمو وجودة الثمار. النيتروجين (N) يُضاف في بداية موسم النمو (فبراير-مارس) بمعدل 1-1.5 كجم/نخلة بالغة سنويًا مقسم على 3-4 دفعات. الفوسفور (P) يُفضل في الخريف لدعم الجذور. البوتاسيوم (K) قبل موسم الحصاد بـ2-3 أشهر لتحسين حجم وجودة التمور. استخدم تحليل التربة لتحديد الاحتياجات الدقيقة، وتجنب الإفراط الذي يسبب مشاكل بيئية.'},
         {id:'plm3', t:'التلقيح اليدوي', c:'مارس-أبريل. حبوب لقاح طازجة. لقح كل سباطة 2-3 مرات بعد انفتاح الأزهار بـ2-3 أيام.'},
         {id:'plm4', t:'خف الثمار', c:'بعد العقد 3-4 أسابيع. أزل المشوهة. اترك 40-60 ثمرة/سباطة حسب الصنف لجودة وحجم أفضل.'},
         {id:'plm5', t:'مكافحة الآفات المتكاملة', c:'راقب سوسة النخيل الحمراء. مصائد فرمونية. برنامج مكافحة متكامل. الوقاية أفضل من العلاج.'},
@@ -381,7 +397,7 @@ if(id.startsWith('local_')){
   return;
 }
 try{const r=await rpc('app_submit_exam',{p_token:S.t,p_course:id,p_answers:a});S.ex=null;await load();toast(r.passed?`نجحت بدرجة ${r.score}%`:`درجتك ${r.score}%، حاول مرة أخرى`);R()}catch(e){toast('تعذر تسليم الاختبار')}}
-function showCert(no){const{x,u,c}=cd(no);S.cn=no;S.m=`<div class="modal"><div class="cw"><div class="cert"><div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div><div class="cb"><div class="seal">LF<br>✓</div><img src="${LOCKUP}" alt="Linah Farms" width="120"><p class="kicker">Certificate of Completion</p><p>تشهد شركة Linah Farms بأن</p><h1>${E(u.name)}</h1><p>قد أتم بنجاح متطلبات دورة</p><h2>${E(c.t)}</h2><p>بتاريخ ${x.dt} — بدرجة نجاح ${x.sc}%</p><div class="sig"><div><div class="line"></div>مدير التدريب الفني</div><div><div class="line"></div>Linah Farms</div></div><div class="qf"><div id="qr"></div><span>رقم الشهادة<br><b>${x.no}</b></span></div></div></div><div class="row noprint"><button class="b" onclick="pcert()">طباعة / حفظ PDF</button><button class="b s o" onclick="cm()">إغلاق</button></div></div></div>`;R()}
+function showCert(no){const{x,u,c}=cd(no);S.cn=no;S.m=`<div class="modal"><div class="cw"><div class="cert"><div class="watermark">LINAH FARMS</div><div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div><div class="cb"><div class="seal">LF<br>✓</div><img src="${LOCKUP}" alt="Linah Farms" width="110" style="margin-bottom:8px"><p class="kicker">Certificate of Completion</p><p style="font-size:13px;margin-top:4px">شهادة إتمام دورة تدريبية</p><p>تشهد شركة <b>Linah Farms</b> بأن</p><h1>${E(u.name)}</h1><p>قد أتم بنجاح متطلبات دورة</p><h2>${E(c.t)}</h2><p>بتاريخ ${x.dt} — بدرجة نجاح <b>${x.sc}%</b></p><div class="sig"><div><div class="line"></div><b>مدير التدريب الفني</b><br><span class="m">Technical Training Manager</span></div><div><div class="line"></div><b>Linah Farms</b><br><span class="m">الإدارة العليا</span></div></div><div class="qf"><div id="qr"></div><span>رقم الشهادة<br><b>${x.no}</b></span></div></div></div><div class="row noprint"><button class="b" onclick="pcert()">طباعة / حفظ PDF</button><button class="b s o" onclick="cm()">إغلاق</button></div></div></div>`;R()}
 function pcert(){document.body.classList.add('pc');try{print()}catch(e){toast('استخدم قائمة المتصفح للطباعة')}document.body.classList.remove('pc')}
 const cm=()=>{S.m='';S.cn='';R()};
 function repH(){const em=emps().filter(u=>avail(u).length),ats=em.flatMap(u=>avail(u).flatMap(c=>P(u.code,c.id).at.map(a=>a.s))),mo={};db.certs.forEach(x=>mo[x.dt.slice(0,7)]=(mo[x.dt.slice(0,7)]||0)+1);
