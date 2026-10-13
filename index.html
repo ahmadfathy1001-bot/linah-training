@@ -259,7 +259,7 @@ function saveLocalProg(cid) {
   } catch(e) {}
 }
 
-async function boot(){if(!S.t){R();if(VQ)verify();return}$('#app').innerHTML=SKEL;try{await load();R();if(S.mc)pinF(true)}catch(e){stok('');S.u=null;R()}}
+async function boot(){if(!S.t){R();if(VQ)verify();return}$('#app').innerHTML=SKEL;try{await load();R();if(S.mc)pinF(true);else maybeShowCompanyInfo()}catch(e){stok('');S.u=null;R()}}
 const TOUR=[
 ['أهلًا بك 👋','هذه منصة Linah Farms للتدريب الفني. هنا تجد دوراتك، تتابع تقدمك، وتحصل على شهاداتك بعد كل اختبار.'],
 ['دوراتك','من الصفحة الرئيسية تفتح أي دورة متاحة لمستواك الوظيفي، وتضغط «ابدأ» لتعليم الدروس ثم أداء الاختبار.'],
@@ -267,6 +267,32 @@ const TOUR=[
 ['رقمك السري','من زر «الرقم السري» أعلى الصفحة يمكنك تغييره في أي وقت. حافظ عليه ولا تشاركه مع أحد.']
 ];
 function tourKey(){return'lf_tour_'+(S.u?S.u.code:'')}
+
+function companyInfoKey(){return 'lf_company_read_'+(S.u?S.u.code:'')}
+function maybeShowCompanyInfo(){
+  if(!S.u) return;
+  try{if(localStorage.getItem(companyInfoKey())) return;}catch(e){}
+  S.m=`<div class="modal"><div class="cw" style="max-width:620px">
+    <div style="text-align:center;margin-bottom:12px"><img src="${LOCKUP}" alt="Linah Farms" height="60"></div>
+    <h3 style="text-align:center;color:var(--g)">مرحبًا بك في منصة تدريب لينة فارمز</h3>
+    <div class="card" style="text-align:right;line-height:1.8">
+      <p><b>قصتنا</b></p>
+      <p>في عام <b>1997</b>، وقف مؤسسنا الراحل على قطعة من الصحراء القاحلة في <b>الواحات البحرية</b> (على بعد 370 كم غرب القاهرة)، حاملًا رؤية واضحة لتحويل الصحراء إلى واحة خضراء تجعل مصر رائدة عالميًا في إنتاج تمر المجدول الفاخر.</p>
+      <p>اليوم، تحولت تلك الرؤية إلى واقع: مزرعة عائلية تمتد على أكثر من <b>3000 فدان</b>، وتضم أكثر من <b>70,000 نخلة مجدول</b> (مع هدف الوصول إلى 100,000)، ويعمل بها فريق يفوق <b>1000 موظف</b> ملتزمين بالجودة والتميز.</p>
+      <p>ننتج أجود أنواع تمور <b>المجدول</b> و<b>البرحي</b>، بالإضافة إلى المانجو والأعشاب الطبية حسب الموسم، من خلال عملية متكاملة تجمع بين الخبرة التقليدية والتقنيات الحديثة، من الزراعة والتلقيح اليدوي حتى الحصاد والتعبئة والتصدير.</p>
+      <p style="margin-top:12px;color:var(--g)"><b>من عائلتنا إلى عائلتك — بكل حب.</b></p>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:14px">
+      <button class="b" onclick="markCompanyRead()">قرأت وفهمت، تابع</button>
+    </div>
+  </div></div>`;
+  R();
+}
+function markCompanyRead(){
+  try{localStorage.setItem(companyInfoKey(),'1')}catch(e){}
+  cm();
+}
+
 function maybeTour(){if(!S.u||S.u.role!='Employee')return;try{if(localStorage.getItem(tourKey()))return}catch(e){return}S.tourStep=0;showTour()}
 function showTour(){const i=S.tourStep,[t,b]=TOUR[i];S.m=`<div class="modal"><div class="cw"><p class="m">خطوة ${i+1} من ${TOUR.length}</p><h3>${E(t)}</h3><p>${E(b)}</p><div class="row">${i<TOUR.length-1?`<button class="b" onclick="S.tourStep++;showTour()">التالي</button>`:`<button class="b" onclick="endTour()">ابدأ الآن</button>`}${i>0?`<button class="b o" onclick="S.tourStep--;showTour()">السابق</button>`:''}<button class="b o" onclick="endTour()">تخطّي</button></div></div></div>`;R()}
 function endTour(){try{localStorage.setItem(tourKey(),'1')}catch(e){}cm()}
@@ -283,12 +309,12 @@ cd=no=>{const x=db.certs.find(y=>y.no==no);return{x,u:db.u.find(y=>y.code==x.cod
 k=(l,v)=>`<div class="card"><div class="n">${v}</div><span class="m">${l}</span></div>`;
 async function login(){const b=$('#lb');b.disabled=true;try{const r=await rpc('app_login',{p_code:$('#code').value,p_pin:$('#pin').value});
 if(!r.ok){toast(r.error=='locked'?'تم إيقاف الدخول مؤقتًا، حاول بعد 15 دقيقة':'الكود أو الرقم السري غير صحيح');return}
-stok(r.token);mc(r.must_change);$('#app').innerHTML=SKEL;await load();S.tab='rep';S.c=null;R();if(r.must_change)pinF(true);else maybeTour()}catch(e){toast(e.message=='network'?'تعذر الاتصال بالخادم. افتح التطبيق من رابطه المنشور وليس من ملف أو من داخل المحادثة.':'خطأ من الخادم: '+e.message)}finally{b.disabled=false}}
+stok(r.token);mc(r.must_change);$('#app').innerHTML=SKEL;await load();S.tab='rep';S.c=null;R();if(r.must_change)pinF(true);else{maybeShowCompanyInfo();maybeTour()}}catch(e){toast(e.message=='network'?'تعذر الاتصال بالخادم. افتح التطبيق من رابطه المنشور وليس من ملف أو من داخل المحادثة.':'خطأ من الخادم: '+e.message)}finally{b.disabled=false}}
 async function logout(){try{await rpc('app_logout',{p_token:S.t})}catch(e){}stok('');mc(0);S.u=null;S.c=null;S.m='';db=null;R()}
 async function verify(){const n=$('#vn').value.trim();if(!n)return;try{const r=await rpc('app_verify_cert',{p_no:n});$('#vr').innerHTML=r.found?`<b class="ok">شهادة صحيحة:</b> ${E(r.name)}، ${E(r.course)}، ${r.score}%، ${r.date}`:'<b class="er">رقم الشهادة غير موجود</b>'}catch(e){$('#vr').textContent='تعذر الاتصال'}}
 const loginH=()=>`<div class="lghero" ><div class="brand"><img src="${MARK}" alt="Linah Farms"><b style="color:#fff">Linah Farms</b></div><div class="tagline"><h1>ثورة في التدريب الزراعي.<br>تطوّر فريقك.</h1><p>منصة Linah Farms للتدريب الفني الزراعي</p></div>
 <div class="lg"><div class="card"><label for="code">كود الموظف</label><input id="code" placeholder="أدخل كودك الوظيفي" autocomplete="username" onkeydown="event.key=='Enter'&&$('#pin').focus()"><label for="pin">الرقم السري</label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" onkeydown="event.key=='Enter'&&login()"><button class="b" id="lb" onclick="login()">تسجيل الدخول</button><p class="m">أول مرة؟ الرقم السري المبدئي يسلّمه لك المشرف.</p></div><div class="card"><label for="vn">التحقق من شهادة</label><input id="vn" placeholder="LF-2026-0001" value="${E(VQ)}"><button class="b o" onclick="verify()">تحقق</button><p id="vr"></p></div></div></div>`;
-const head=()=>`<header><span class="lp"><img src="${MARK}" alt="Linah Farms" height="32"></span><b>منصة التدريب</b><span class="nm">${E(S.u.name)}</span><button class="b s o" onclick="pinF()">الرقم السري</button><button class="b s o" onclick="logout()">خروج</button></header>`;
+const head=()=>`<header><span class="lp" style="background:#fff;padding:4px 10px;border-radius:8px"><img src="${LOCKUP}" alt="Linah Farms" height="40" style="display:block"></span><b>منصة التدريب</b><span class="nm">${E(S.u.name)}</span><button class="b s o" onclick="pinF()">الرقم السري</button><button class="b s o" onclick="logout()">خروج</button></header>`;
 function empPageH(){return ({home:homeH,courses:coursesH,news:newsH,tips:tipsH,profile:profileH}[S.etab||'home'])()}
 function newsH(){
 const sites = [
@@ -497,7 +523,7 @@ function bottomNav(){
   const current = isEmp ? (S.etab||'home') : S.tab;
   return `<nav class="bottom-nav">${items.map(it=>{
     const isOn = !it.action && it.id==current;
-    const onclick = it.action ? it.action+'()' : `S.${it.tab}='${it.id}';R()`;
+    const onclick = it.action ? it.action+'()' : `S.c=null;S.ex=null;S.${it.tab}='${it.id}';R()`;
     return `<button class="${isOn?'on':''}" onclick="${onclick}"><span class="icon">${it.icon}</span><span>${it.label}</span></button>`;
   }).join('')}</nav>`;
 }
