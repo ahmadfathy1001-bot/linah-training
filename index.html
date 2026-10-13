@@ -113,7 +113,136 @@ async function load(){const r=await rpc('app_bootstrap',{p_token:S.t});db={u:r.u
 const li={};db.c.forEach(c=>c.l.forEach((l,i)=>li[l.id]={cid:c.id,i}));
 r.lp.forEach(x=>{const m=li[x.l];if(m)P(x.code,m.cid).d.push(m.i)});r.at.forEach(x=>P(x.code,x.cid).at.push({s:x.s,dt:x.dt}));
 db.lpRaw=r.lp;db.atRaw=r.at;db.exp={};(r.exp||[]).forEach(x=>db.exp[x.cid+'|'+x.code]=x.exp);db.att=r.att||[];db.adm=r.adm||null;db.news=r.news||[];db.tips=r.tips||[];db.certs.forEach(x=>{const p=P(x.code,x.cid);p.ok=1;p.cert=x.no});
-S.u=db.u.find(u=>u.code==r.me.code)||{...r.me,lv:-1,dept:'',sector:''};S.u.av=r.me.av||null}
+S.u=db.u.find(u=>u.code==r.me.code)||{...r.me,lv:-1,dept:'',sector:''};S.u.av=r.me.av||null; injectStaticCourses();}
+
+// Static local courses injected for offline/demo (فن الانجاز + إدارية + نخيل)
+function injectStaticCourses() {
+  if (!db || !db.c) return;
+  const localCourses = [
+    {
+      id: 'local_gtd',
+      t: 'فن الانجاز (Getting Things Done)',
+      intro: 'منهجية GTD لإدارة المهام والحياة بدون ضغط. الهدف إخراج الالتزامات من الدماغ ووضعها في نظام موثوق.',
+      obj: 'فهم مبادئ GTD\nتطبيق خطوات Capture و Clarify و Organize و Reflect و Engage\nاستخدام قاعدة الدقيقتين والمراجعة الأسبوعية\nتحسين الإنتاجية في العمل الزراعي والإداري',
+      lv: [0,1,2,3,4,5,6,7,8,9,10],
+      pre: null,
+      m: [],
+      l: [
+        {id:'gtd1', t:'المقدمة وهدف المنهج', c:'GTD ليس مجرد قائمة مهام. الهدف إخراج الالتزامات من الدماغ إلى نظام موثوق. عقلك مصمم للتفكير لا للتذكر كل شيء. الدوائر المفتوحة (Open Loops) تستهلك الذاكرة الذهنية المؤقتة (Psychic RAM).'},
+        {id:'gtd2', t:'الخطوة 1: التقاط (Capture)', c:'اجمع كل الالتزامات والأفكار في "دلو" تثق أنك ستعالجه. فكرت فيها؟ اكتبها. استخدم Mind Sweep وقائمة المحفزات (Trigger List) لتفريغ كل شيء من رأسك.'},
+        {id:'gtd3', t:'الخطوة 2: التوضيح (Clarify)', c:'لكل عنصر: هل هو قابل للتنفيذ؟ إذا لا: ألقه (Trash) أو احفظه كمرجع (Reference) أو أجلّه (Incubate/Someday). إذا نعم: ما النتيجة المرغوبة؟ ما الإجراء التالي؟ قاعدة الدقيقتين: إذا أقل من دقيقتين افعله الآن.'},
+        {id:'gtd4', t:'الخطوة 3: التنظيم (Organize)', c:'الفئات: Projects (مشاريع)، Calendar (تقويم)، Next Actions (إجراءات تالية حسب السياق: مكالمات، مكتب، كمبيوتر...)، Waiting For (في انتظار)، Reference، Someday/Maybe.'},
+        {id:'gtd5', t:'الخطوة 4: المراجعة (Reflect)', c:'المراجعة الأسبوعية: Get Clear (نظف القوائم)، Get Current (حدّث المشاريع والتقويم)، Get Creative (أفكار جديدة). المراجعة تجعل النظام موثوقًا.'},
+        {id:'gtd6', t:'الخطوة 5: التنفيذ (Engage)', c:'معايير التحديد: السياق (Context)، الوقت المتاح، الطاقة/الموارد. آفاق التركيز (Horizons of Focus) من الإجراءات اليومية إلى الغرض والمبادئ. ثق بالنظام وقرر بثقة.'},
+        {id:'gtd7', t:'تطبيق عملي في المزرعة', c:'استخدم GTD في إدارة ري النخيل، متابعة التسميد، مهام المشرفين، اجتماعات الفريق. اخرج المهام من رأسك لتنفيذ أفضل وجودة أعلى.'}
+      ],
+      q: [
+        {q:'ما الهدف الأساسي من منهجية GTD؟', o:['إنجاز المزيد من المهام فقط','إخراج الالتزامات من الدماغ إلى نظام موثوق','استخدام تطبيقات معقدة','تذكر كل شيء في الرأس'], a:1},
+        {q:'ما هي الدوائر المفتوحة (Open Loops)؟', o:['مهام مكتملة','التزامات غير معالجة تستهلك الذاكرة','قوائم فارغة','مشاريع منتهية'], a:1},
+        {q:'قاعدة الدقيقتين تعني:', o:['أجل كل شيء دقيقتين','إذا كان الإجراء يأخذ أقل من دقيقتين افعله فورًا','راجع كل دقيقتين','لا تعمل أكثر من دقيقتين'], a:1},
+        {q:'في خطوة Clarify إذا كان العنصر غير قابل للتنفيذ، يمكنك:', o:['وضعه في Next Actions','Trash أو Reference أو Incubate','وضعه في التقويم فقط','تجاهله دائمًا'], a:1},
+        {q:'ما هي الفئات الأساسية في Organize؟', o:['فقط قائمة واحدة','Projects, Calendar, Next Actions, Waiting For, Someday/Maybe','البريد فقط','الملاحظات العشوائية'], a:1},
+        {q:'المراجعة الأسبوعية تشمل:', o:['Get Clear, Get Current, Get Creative','فقط حذف المهام','العمل بدون توقف','تجاهل المشاريع'], a:1},
+        {q:'معايير Engage (التنفيذ) تشمل:', o:['السياق والوقت والموارد','فقط الأولوية العشوائية','عدد المهام فقط','المزاج فقط'], a:1},
+        {q:'Horizons of Focus تبدأ من:', o:['الإجراءات اليومية (Ground) حتى الغرض والمبادئ','فقط الأهداف الكبيرة','القوائم فقط','المشاريع فقط'], a:1},
+        {q:'"Your mind is for having ideas, not holding them" يعني:', o:['احتفظ بكل شيء في رأسك','اكتب الأفكار فورًا ولا تحتفظ بها في الذاكرة','لا تفكر','استخدم الذاكرة فقط'], a:1},
+        {q:'Trigger List تستخدم في:', o:['مرحلة Capture لتفريغ كل الالتزامات','مرحلة التنفيذ فقط','المراجعة فقط','التنظيم فقط'], a:1},
+        {q:'إذا كان الإجراء التالي يحتاج وقتًا أطول من دقيقتين، تضعه في:', o:['Trash','Next Actions أو Project أو Calendar','Someday دائمًا','Reference'], a:1},
+        {q:'Waiting For تعني:', o:['مهام تنتظر رد أو إجراء من شخص آخر','مهام منتهية','أفكار مستقبلية','مراجع'], a:1},
+        {q:'أفضل ممارسة في GTD هي:', o:['الثقة بالنظام بعد المراجعة المنتظمة','الاعتماد على الذاكرة','عدم الكتابة','العمل بدون خطة'], a:1},
+        {q:'في سياق المزرعة، يمكن استخدام GTD لـ:', o:['إدارة مهام الري والتسميد والمتابعة فقط','لا شيء','الترفيه','النسيان'], a:1},
+        {q:'الراحة تأتي عندما:', o:['تعرف بالضبط ما اخترت أن تفعله وما لا تفعله الآن','تنجز كل شيء فورًا','تنسى المهام','تعمل بدون توقف'], a:1}
+      ]
+    },
+    {
+      id: 'local_admin',
+      t: 'المهارات الإدارية والسوفت سكيلز للمهندسين والمشرفين',
+      intro: 'دورة في إدارة الفرق، التواصل، تفويض المهام، وحل المشكلات للمشرفين والمهندسين في المزرعة.',
+      obj: 'تحسين مهارات القيادة والتواصل\nتفويض المهام بفعالية\nإدارة الوقت والاجتماعات\nحل النزاعات وبناء الفريق',
+      lv: [3,4,5,6,7,8,9,10],
+      pre: null,
+      m: [],
+      l: [
+        {id:'adm1', t:'أساسيات القيادة الزراعية', c:'المشرف الناجح يوجه الفريق نحو أهداف واضحة، يتابع التنفيذ، ويوفر الدعم. ركز على النتائج لا على الحضور فقط.'},
+        {id:'adm2', t:'التواصل الفعال', c:'استمع أكثر مما تتكلم. استخدم لغة واضحة، قدم ملاحظات بناءة، وتأكد من الفهم. الاجتماعات القصيرة المنتظمة أفضل من الطويلة.'},
+        {id:'adm3', t:'تفويض المهام', c:'فوض المهام المناسبة للمستوى، حدد النتيجة المتوقعة والموعد، ثم تابع دون تدقيق مفرط. هذا يبني الثقة والكفاءة.'},
+        {id:'adm4', t:'إدارة الوقت والأولويات', c:'استخدم مصفوفة الأهمية/الاستعجال. ركز على المهام المهمة غير العاجلة (الوقاية والتخطيط). طبق قاعدة الدقيقتين.'},
+        {id:'adm5', t:'حل المشكلات واتخاذ القرار', c:'حدد المشكلة بوضوح، اجمع البيانات، اقترح حلولًا، اختر الأفضل، نفذ وراجع. شارك الفريق في الحلول.'},
+        {id:'adm6', t:'بناء الفريق والتحفيز', c:'اعرف نقاط قوة كل فرد، احتفل الإنجازات، عالج النزاعات مبكرًا، ووفر فرص التطوير.'}
+      ],
+      q: [
+        {q:'أفضل أسلوب للتفويض هو:', o:['إعطاء المهمة بدون توضيح','تحديد النتيجة والموعد والمتابعة','التدقيق في كل خطوة','عدم التفويض أبدًا'], a:1},
+        {q:'في التواصل الفعال:', o:['الكلام أكثر من الاستماع','الاستماع النشط والتأكد من الفهم','استخدام لغة معقدة','تجاهل الملاحظات'], a:1},
+        {q:'المهام المهمة غير العاجلة يجب:', o:['تأجيلها دائمًا','إعطاؤها أولوية للتخطيط والوقاية','تجاهلها','تنفيذها آخر شيء'], a:1},
+        {q:'حل المشكلات يبدأ بـ:', o:['اختيار الحل فورًا','تحديد المشكلة بوضوح وجمع البيانات','اللوم','التجاهل'], a:1},
+        {q:'بناء الفريق يعتمد على:', o:['معرفة نقاط القوة والتحفيز والاحتفال بالإنجازات','المنافسة فقط','العقاب','عدم التواصل'], a:1},
+        {q:'الاجتماعات الفعالة تكون:', o:['طويلة ومتكررة بدون هدف','قصيرة مع أجندة واضحة ونتائج','بدون تحضير','يومية بدون هدف'], a:1},
+        {q:'المشرف الناجح يركز على:', o:['النتائج والتوجيه والدعم','الحضور فقط','السيطرة الكاملة','عدم المتابعة'], a:1},
+        {q:'عند وجود نزاع في الفريق:', o:['تجاهله','معالجته مبكرًا بشكل بناء','تصعيده فورًا دائمًا','معاقبة الجميع'], a:1}
+      ]
+    },
+    {
+      id: 'local_palm',
+      t: 'النخيل والزراعة والتغذية المتقدمة',
+      intro: 'معلومات عملية متقدمة عن رعاية النخيل، الري، التسميد، التلقيح، الخف، والمكافحة.',
+      obj: 'تطبيق أفضل ممارسات الري والتسميد\nتحسين جودة التمور من خلال الخف والتلقيح\nمكافحة الآفات بشكل متكامل\nفهم احتياجات النخلة الغذائية',
+      lv: [0,1,2,3,4,5,6,7,8,9,10],
+      pre: null,
+      m: [],
+      l: [
+        {id:'plm1', t:'الري حسب الموسم والتربة', c:'في النمو: كل 7-10 أيام. في الشتاء: 15-20 يوم. استخدم التنقيط. راقب الرطوبة. التربة الرملية تحتاج ريًا أكثر.'},
+        {id:'plm2', t:'التسميد المتوازن', c:'نيتروجين في بداية النمو (فبراير-مارس). فوسفور في الخريف. بوتاسيوم قبل الحصاد. الكمية: 1-1.5 كجم نيتروجين للنخلة البالغة سنويًا مقسمة.'},
+        {id:'plm3', t:'التلقيح اليدوي', c:'مارس-أبريل. حبوب لقاح طازجة. لقح كل سباطة 2-3 مرات بعد انفتاح الأزهار بـ2-3 أيام.'},
+        {id:'plm4', t:'خف الثمار', c:'بعد العقد 3-4 أسابيع. أزل المشوهة. اترك 40-60 ثمرة/سباطة حسب الصنف لجودة وحجم أفضل.'},
+        {id:'plm5', t:'مكافحة الآفات المتكاملة', c:'راقب سوسة النخيل الحمراء. مصائد فرمونية. برنامج مكافحة متكامل. الوقاية أفضل من العلاج.'},
+        {id:'plm6', t:'الحصاد والجودة', c:'احصد في مرحلة الرطب أو التمر حسب الصنف. الحصاد المبكر يقلل الجودة. استخدم أدوات آمنة.'},
+        {id:'plm7', t:'التغذية والعناصر الأساسية', c:'النخلة تحتاج نيتروجين للنمو، بوتاسيوم للجودة، فوسفور للجذور. راقب أعراض النقص وعدّل التسميد.'}
+      ],
+      q: [
+        {q:'في موسم النمو، الري الموصى به كل:', o:['يوم','7-10 أيام','شهر','3 أيام دائمًا'], a:1},
+        {q:'الكمية السنوية للنيتروجين للنخلة البالغة حوالي:', o:['100 جرام','1-1.5 كجم','10 كجم','0.1 كجم'], a:1},
+        {q:'أفضل وقت للتلقيح:', o:['ديسمبر','مارس وأبريل','يوليو','يناير'], a:1},
+        {q:'خف الثمار يتم بعد العقد بـ:', o:['يوم واحد','3-4 أسابيع','6 أشهر','فور التلقيح'], a:1},
+        {q:'عدد الثمار المناسب في السباطة غالبًا:', o:['10-20','40-60','200','5'], a:1},
+        {q:'لمكافحة سوسة النخيل الحمراء نستخدم:', o:['مصائد فرمونية ومكافحة متكاملة','الرش العشوائي فقط','لا شيء','الحرق'], a:1},
+        {q:'التسميد البوتاسي يفضل قبل:', o:['الري فقط','موسم الحصاد بـ2-3 أشهر','الشتاء','التلقيح'], a:1},
+        {q:'الحصاد المبكر يؤدي إلى:', o:['جودة أعلى','جودة أقل','لا فرق','حجم أكبر دائمًا'], a:1},
+        {q:'التربة الرملية تحتاج:', o:['ري أقل','ري أكثر من الطينية','لا ري','ري مرة واحدة'], a:1},
+        {q:'النيتروجين مهم لـ:', o:['جودة التمر فقط','نمو النخلة','الجذور فقط','اللون'], a:1}
+      ]
+    }
+  ];
+  localCourses.forEach(c => {
+    if (!db.c.find(x => x.id === c.id)) {
+      db.c.push(c);
+    }
+  });
+  // Load local progress
+  try {
+    const localProg = JSON.parse(localStorage.getItem('lf_local_prog_' + (S.u ? S.u.code : '')) || '{}');
+    Object.keys(localProg).forEach(cid => {
+      const p = P(S.u.code, cid);
+      const lp = localProg[cid];
+      p.d = lp.d || [];
+      p.at = lp.at || [];
+      p.ok = lp.ok || 0;
+      if (p.ok && !db.certs.find(x => x.cid === cid && x.code === S.u.code)) {
+        db.certs.push({no: 'LOCAL-' + cid, code: S.u.code, cid: cid, sc: (p.at.length ? Math.max(...p.at.map(a=>a.s)) : 100), dt: today()});
+      }
+    });
+  } catch(e) {}
+}
+function saveLocalProg(cid) {
+  if (!S.u) return;
+  try {
+    const key = 'lf_local_prog_' + S.u.code;
+    const all = JSON.parse(localStorage.getItem(key) || '{}');
+    const p = P(S.u.code, cid);
+    all[cid] = {d: p.d, at: p.at, ok: p.ok};
+    localStorage.setItem(key, JSON.stringify(all));
+  } catch(e) {}
+}
+
 async function boot(){if(!S.t){R();if(VQ)verify();return}$('#app').innerHTML=SKEL;try{await load();R();if(S.mc)pinF(true)}catch(e){stok('');S.u=null;R()}}
 const TOUR=[
 ['أهلًا بك 👋','هذه منصة Linah Farms للتدريب الفني. هنا تجد دوراتك، تتابع تقدمك، وتحصل على شهاداتك بعد كل اختبار.'],
@@ -144,7 +273,7 @@ async function verify(){const n=$('#vn').value.trim();if(!n)return;try{const r=a
 const loginH=()=>`<div class="lghero" ><div class="brand"><img src="${MARK}" alt="Linah Farms"><b style="color:#fff">Linah Farms</b></div><div class="tagline"><h1>ثورة في التدريب الزراعي.<br>تطوّر فريقك.</h1><p>منصة Linah Farms للتدريب الفني الزراعي</p></div>
 <div class="lg"><div class="card"><label for="code">كود الموظف</label><input id="code" placeholder="أدخل كودك الوظيفي" autocomplete="username" onkeydown="event.key=='Enter'&&$('#pin').focus()"><label for="pin">الرقم السري</label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" onkeydown="event.key=='Enter'&&login()"><button class="b" id="lb" onclick="login()">تسجيل الدخول</button><p class="m">أول مرة؟ الرقم السري المبدئي يسلّمه لك المشرف.</p></div><div class="card"><label for="vn">التحقق من شهادة</label><input id="vn" placeholder="LF-2026-0001" value="${E(VQ)}"><button class="b o" onclick="verify()">تحقق</button><p id="vr"></p></div></div></div>`;
 const head=()=>`<header><span class="lp"><img src="${MARK}" alt="Linah Farms" height="32"></span><b>منصة التدريب</b><span class="nm">${E(S.u.name)}</span><button class="b s o" onclick="pinF()">الرقم السري</button><button class="b s o" onclick="logout()">خروج</button></header>`;
-function empPageH(){return ({home:homeH,news:newsH,tips:tipsH,profile:profileH}[S.etab||'home'])()}
+function empPageH(){return ({home:homeH,courses:coursesH,news:newsH,tips:tipsH,profile:profileH}[S.etab||'home'])()}
 function newsH(){
 const sites = [
   {title:'منصة التعلم الإلكتروني لمنظمة الفاو', url:'https://elearning.fao.org/', desc:'دورات مجانية في الزراعة والأمن الغذائي وإدارة الموارد', img: FARM_IMAGES.dates},
@@ -163,8 +292,19 @@ function newsForm(){form('نشر خبر جديد',[['title','العنوان','te
 async x=>{let img=x.img;if(img){img=await shrinkImg(img)}const r=await rpc('app_add_news',{p_token:S.t,p_title:x.title,p_body:x.body,p_image:img||null});return r.ok?0:'تعذر النشر'})}
 async function delNews(id,title){confirmBox(`حذف الخبر "${title}"؟`,`delNewsReal('${id}')`)}
 async function delNewsReal(id){try{await rpc('app_delete_news',{p_token:S.t,p_id:id});await load();R()}catch(e){toast('تعذر الحذف')}}
-function tipsH(){const can=S.u.role!='Employee';
-return `${can?`<div class="row noprint"><button class="b" onclick="tipForm()">إضافة نصيحة</button></div>`:''}<div class="gr">${(db.tips||[]).map(t=>`<div class="card"><p>💡 ${E(t.body)}</p><p class="m">${E(t.author)} — ${t.dt}</p>${can?`<button class="b s o" onclick="delTip('${t.id}')">حذف</button>`:''}</div>`).join('')||'<p class="m">لا توجد نصائح بعد.</p>'}</div>`}
+function tipsH(){
+  const tips = [
+    {title:'الري في موسم النمو', body:'في فصل الربيع والصيف، اروي النخيل كل 7-10 أيام حسب نوع التربة. استخدم الري بالتنقيط لتوفير المياه. تجنب الري الزائد الذي يسبب تعفن الجذور.'},
+    {title:'التسميد النيتروجيني', body:'أضف سماد اليوريا أو نترات الأمونيوم في بداية موسم النمو (فبراير-مارس). الكمية الموصى بها 1-1.5 كجم نيتروجين للنخلة البالغة سنويًا، مقسمة على 3-4 دفعات.'},
+    {title:'التلقيح اليدوي', body:'يتم التلقيح في شهري مارس وأبريل. استخدم حبوب لقاح طازجة من ذكور قوية. لقح كل سباطة 2-3 مرات لضمان عقد جيد. الوقت المثالي بعد انفتاح الأزهار الأنثوية بـ 2-3 أيام.'},
+    {title:'خف الثمار', body:'خف السباطات بعد العقد بـ 3-4 أسابيع. أزل الثمار الصغيرة أو المشوهة. اترك 40-60 ثمرة في السباطة الواحدة حسب الصنف للحصول على حجم وجودة أفضل.'},
+    {title:'الري في الشتاء', body:'قلل الري في الشتاء إلى كل 15-20 يوم. التربة الرملية تحتاج ري أكثر من الطينية. راقب رطوبة التربة قبل الري.'},
+    {title:'التسميد البوتاسي والفوسفوري', body:'أضف سماد السوبر فوسفات في الخريف، وسلفات البوتاسيوم قبل موسم الحصاد بـ 2-3 أشهر لتحسين جودة التمور وحجمها.'},
+    {title:'مكافحة الآفات', body:'راقب سوسة النخيل الحمراء بانتظام. استخدم المصائد الفرمونية. في حالة الإصابة، اتبع برنامج المكافحة المتكاملة المعتمد.'},
+    {title:'الحصاد', body:'احصد التمور عند الوصول لمرحلة الرطب أو التمر حسب الصنف. الحصاد المبكر يقلل من الجودة. استخدم السلالم أو المنصات الآمنة.'}
+  ];
+  return `<div class="gr">${tips.map(t=>`<div class="card"><b>💡 ${E(t.title)}</b><p>${E(t.body)}</p></div>`).join('')}</div>`;
+}
 function tipForm(){form('إضافة نصيحة',[['body','نص النصيحة','area']],{body:''},async x=>{const r=await rpc('app_add_tip',{p_token:S.t,p_body:x.body});return r.ok?0:'تعذر الحفظ'})}
 async function delTip(id){confirmBox('حذف هذه النصيحة؟',`delTipReal('${id}')`)}
 async function delTipReal(id){try{await rpc('app_delete_tip',{p_token:S.t,p_id:id});await load();R()}catch(e){toast('تعذر الحذف')}}
@@ -184,14 +324,6 @@ ${overdue.length?`<div class="card" style="border-color:#e0a030"><b style="color
 <div class="kp">${k('الدورات المتاحة',a.length)}${k('المنجزة',ps.filter(x=>x==100).length)}${k('قيد التنفيذ',ps.filter(x=>x>0&&x<100).length)}${k('نسبة الإتمام',comp(u)+'%')}${k('الشهادات',cs.length)}</div>
 <h3>إنجازك الأسبوعي (آخر 7 أيام)</h3><div class="kp">${(()=>{const since=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const lz=(db.lpRaw||[]).filter(x=>x.code==u.code&&x.dt>=since).length;const az=(db.atRaw||[]).filter(x=>x.code==u.code&&x.dt>=since).length;const cz=cs.filter(x=>x.dt>=since).length;return k('دروس أُنجزت',lz)+k('اختبارات أُديت',az)+k('شهادات جديدة',cz)})()}</div>
 <h3>مسارك الوظيفي</h3><div class="card"><div class="sc" style="display:flex;gap:6px;padding-bottom:6px">${LV.map((name,i)=>`<div style="flex:none;text-align:center;min-width:84px"><div style="width:28px;height:28px;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;background:${i<u.lv?'var(--au)':i==u.lv?'var(--gb)':'transparent'};border:2px solid ${i<=u.lv?'var(--au)':'var(--b)'};color:${i<u.lv?'#0d3d22':'var(--t)'}">${i<u.lv?'✓':i+1}</div><p class="m" style="font-size:11px">${E(name)}</p></div>`).join('')}</div></div>
-<h3>دوراتي</h3><input class="noprint" placeholder="ابحث في دوراتك" value="${E(S.cq||'')}" oninput="S.cq=this.value;R()">
-<div class="gr">${a.filter(c=>!S.cq||c.t.includes(S.cq)).map((c,i)=>{i=a.indexOf(c);const pre=c.pre&&db.c.find(x=>x.id==c.pre);const locked=pre&&!db.certs.some(x=>x.code==u.code&&x.cid===pre.id);return `<div class="card" style="text-align:center;padding:16px">${locked?`<p class="m">🔒 يتطلب: ${E(pre.t)}</p>`:''}
-<div style="font-size:36px;margin-bottom:8px">🌴</div>
-<b>${E(c.t)}</b>
-<div class="bar"><i style="width:${ps[i]}%"></i></div>
-<p class="m">${ps[i]}%</p>
-<button class="b s ${!ps[i]&&!locked?'startb':''}" ${locked?'disabled':''} onclick="openC('${c.id}')">${locked?'مغلقة':ps[i]==100?'عرض':ps[i]?'متابعة':'ابدأ'}</button>
-</div>`}).join('')||'<p class="m">لا توجد دورات لمستواك الوظيفي بعد.</p>'}</div>
 <button class="b s o noprint" onclick="print()">طباعة سجلي</button>
 <h3>شهاداتي</h3>${cs.map(x=>`<div class="card row"><span>${E(cd(x.no).c.t)} <span class="m">${x.no}</span></span><button class="b s" onclick="showCert('${x.no}')">عرض</button></div>`).join('')||'<p class="m">ستظهر شهاداتك هنا بعد اجتياز الدورات.</p>'}<h3>ملاحظاتك ومقترحاتك</h3><div class="card"><textarea id="fbmsg" placeholder="اكتب أي ملاحظة أو مقترح لإدارة التدريب"></textarea><button class="b s" onclick="sendFb()">إرسال</button></div>`}
 function openC(id){S.c=id;S.ex=null;try{const seen=JSON.parse(localStorage.getItem(seenKey())||'{}');seen[id]=1;localStorage.setItem(seenKey(),JSON.stringify(seen))}catch(e){}R();scrollTo(0,0)}
@@ -220,8 +352,34 @@ const sc=Math.max(s/img.width,s/img.height),w=img.width*sc,hh=img.height*sc;cx.d
 const url=cv.toDataURL('image/jpeg',.85);
 try{const r=await rpc('app_set_avatar',{p_token:S.t,p_data_url:url});if(!r.ok)return toast('تعذر حفظ الصورة');S.u.av=url;await load();R();toast('تم تحديث صورتك الشخصية')}catch(e){toast('تعذر حفظ الصورة')}};img.src=rd.result};
 rd.readAsDataURL(f)}
-async function tg(id,i){const c=db.c.find(x=>x.id==id);try{await rpc('app_toggle_lesson',{p_token:S.t,p_lesson:c.l[i].id});await load();R()}catch(e){toast('تعذر الحفظ')}}
+async function tg(id,i){const c=db.c.find(x=>x.id==id);
+if(id.startsWith('local_')){
+  const p=P(S.u.code,id);
+  const idx=p.d.indexOf(i);
+  if(idx>=0) p.d.splice(idx,1); else p.d.push(i);
+  saveLocalProg(id);
+  R();
+  return;
+}
+try{await rpc('app_toggle_lesson',{p_token:S.t,p_lesson:c.l[i].id});await load();R()}catch(e){toast('تعذر الحفظ')}}
 async function sub(id){const c=db.c.find(x=>x.id==id),a=c.q.map((q,i)=>{const r=document.querySelector(`input[name=q${i}]:checked`);return r?+r.value:-1});
+if(id.startsWith('local_')){
+  let correct=0;
+  c.q.forEach((q,i)=>{if(a[i]===q.a) correct++;});
+  const score=Math.round(correct/c.q.length*100);
+  const passed=score>=70;
+  const p=P(S.u.code,id);
+  p.at.push({s:score,dt:today()});
+  if(passed) p.ok=1;
+  saveLocalProg(id);
+  if(passed && !db.certs.find(x=>x.cid===id && x.code===S.u.code)){
+    db.certs.push({no:'LOCAL-'+id+'-'+Date.now(), code:S.u.code, cid:id, sc:score, dt:today()});
+  }
+  S.ex=null;
+  toast(passed?`نجحت بدرجة ${score}%`:`درجتك ${score}%، حاول مرة أخرى`);
+  R();
+  return;
+}
 try{const r=await rpc('app_submit_exam',{p_token:S.t,p_course:id,p_answers:a});S.ex=null;await load();toast(r.passed?`نجحت بدرجة ${r.score}%`:`درجتك ${r.score}%، حاول مرة أخرى`);R()}catch(e){toast('تعذر تسليم الاختبار')}}
 function showCert(no){const{x,u,c}=cd(no);S.cn=no;S.m=`<div class="modal"><div class="cw"><div class="cert"><div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div><div class="cb"><div class="seal">LF<br>✓</div><img src="${LOCKUP}" alt="Linah Farms" width="120"><p class="kicker">Certificate of Completion</p><p>تشهد شركة Linah Farms بأن</p><h1>${E(u.name)}</h1><p>قد أتم بنجاح متطلبات دورة</p><h2>${E(c.t)}</h2><p>بتاريخ ${x.dt} — بدرجة نجاح ${x.sc}%</p><div class="sig"><div><div class="line"></div>مدير التدريب الفني</div><div><div class="line"></div>Linah Farms</div></div><div class="qf"><div id="qr"></div><span>رقم الشهادة<br><b>${x.no}</b></span></div></div></div><div class="row noprint"><button class="b" onclick="pcert()">طباعة / حفظ PDF</button><button class="b s o" onclick="cm()">إغلاق</button></div></div></div>`;R()}
 function pcert(){document.body.classList.add('pc');try{print()}catch(e){toast('استخدم قائمة المتصفح للطباعة')}document.body.classList.remove('pc')}
@@ -308,10 +466,10 @@ function bottomNav(){
   if(isEmp){
     items = [
       {id:'home', icon:'🏠', label:'الرئيسية', tab:'etab'},
+      {id:'courses', icon:'📚', label:'دوراتي', tab:'etab'},
       {id:'news', icon:'📰', label:'الأخبار', tab:'etab'},
       {id:'tips', icon:'💡', label:'نصائح', tab:'etab'},
-      {id:'profile', icon:'👤', label:'ملفي', tab:'etab'},
-      {id:'logout', icon:'🚪', label:'خروج', action:'logout'}
+      {id:'profile', icon:'👤', label:'ملفي', tab:'etab'}
     ];
   } else {
     const T = S.u.role=='Trainer' ? [['rep','📊','التقارير'],['crs','📚','الدورات'],['att','✅','الحضور'],['news','📰','الأخبار'],['tips','💡','نصائح']] 
@@ -354,12 +512,28 @@ function profileH(){
   <div class="gr">${a.map(c=>{
     const p = pc(u.code,c);
     return `<div class="card" style="text-align:center;cursor:pointer" onclick="openC('${c.id}')">
-      <img src="${FARM_IMAGES.hero}" style="width:60px;height:60px;border-radius:12px;object-fit:cover;margin:0 auto 8px">
       <b>${E(c.t)}</b>
       <div class="bar"><i style="width:${p}%"></i></div>
       <p class="m">${p}%</p>
     </div>`;
   }).join('')||'<p class="m">لا دورات متاحة</p>'}</div>`;
+}
+
+function coursesH(){
+  const u=S.u, a=avail(u), ps=a.map(c=>pc(u.code,c));
+  return `<h3>دوراتي</h3>
+  <input class="noprint" placeholder="ابحث في دوراتك" value="${E(S.cq||'')}" oninput="S.cq=this.value;R()">
+  <div class="gr">${a.filter(c=>!S.cq||c.t.includes(S.cq)).map((c,i)=>{
+    const pre=c.pre&&db.c.find(x=>x.id==c.pre);
+    const locked=pre&&!db.certs.some(x=>x.code==u.code&&x.cid===pre.id);
+    const p=ps[a.indexOf(c)];
+    return `<div class="card">${locked?`<p class="m">🔒 يتطلب اجتياز: ${E(pre.t)} أولًا</p>`:''}
+    <b>${E(c.t)}</b>
+    <div class="bar"><i style="width:${p}%"></i></div>
+    <p class="m">${p}%</p>
+    <button class="b s ${!p&&!locked?'startb':''}" ${locked?'disabled':''} onclick="openC('${c.id}')">${locked?'مغلقة':p==100?'عرض':p?'متابعة':'ابدأ'}</button>
+    </div>`;
+  }).join('')||'<p class="m">لا توجد دورات لمستواك الوظيفي بعد.</p>'}</div>`;
 }
 function R(){$('#app').innerHTML=S.u?`<div class="print-head"><img src="${LOCKUP}" alt="Linah Farms"><b>منصة التدريب</b></div>`+head()+'<main>'+(S.c?courseH():S.u.role=='Employee'?empPageH():adminH())+'</main>'+bottomNav()+FT+S.m:loginH()+FT;
 if(S.cn&&window.QRCode&&$('#qr')){const{x,u,c}=cd(S.cn);new QRCode($('#qr'),{text:location.origin+location.pathname+'?verify='+x.no,width:90,height:90})}
