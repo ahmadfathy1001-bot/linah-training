@@ -78,6 +78,15 @@ main{padding-bottom:70px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+
+const FARM_IMAGES = {
+  hero: "https://linahfarms.com/cdn/shop/files/extra_juicy_4.jpg?v=1729784235",
+  dates: "https://linahfarms.com/cdn/shop/collections/on_the_go_medjools_1.jpg?v=1770671181",
+  products: "https://linahfarms.com/cdn/shop/collections/all-products.jpg?v=1771789909",
+  box: "https://linahfarms.com/cdn/shop/collections/IMG-20210927-WA0014.jpg?v=1632851978",
+  nutjools: "https://linahfarms.com/cdn/shop/files/38EDB5D8-8983-46C8-BFF3-BDBC74E6FAF5.jpg?v=1769602294"
+};
+
 const SKEL=`<header><span class="lp"><span class="sk" style="width:32px;height:32px;border-radius:6px;display:block"></span></span><b class="sk" style="width:110px;height:14px"></b><span class="sk" style="width:60px;height:28px;border-radius:8px"></span></header><main>
 <div class="card sk-card"><div class="sk" style="width:140px;height:20px;margin-bottom:10px"></div><div class="sk" style="width:90%;height:12px"></div></div>
 <div class="kp"><div class="card sk-card"><div class="sk" style="width:40px;height:28px;margin:0 auto 6px"></div><div class="sk" style="width:70%;height:10px;margin:0 auto"></div></div><div class="card sk-card"><div class="sk" style="width:40px;height:28px;margin:0 auto 6px"></div><div class="sk" style="width:70%;height:10px;margin:0 auto"></div></div></div>
@@ -132,16 +141,21 @@ async function verify(){const n=$('#vn').value.trim();if(!n)return;try{const r=a
 const loginH=()=>`<div class="lghero" ><div class="brand"><img src="${MARK}" alt="Linah Farms"><b style="color:#fff">Linah Farms</b></div><div class="tagline"><h1>ثورة في التدريب الزراعي.<br>تطوّر فريقك.</h1><p>منصة Linah Farms للتدريب الفني الزراعي</p></div>
 <div class="lg"><div class="card"><label for="code">كود الموظف</label><input id="code" placeholder="أدخل كودك الوظيفي" autocomplete="username" onkeydown="event.key=='Enter'&&$('#pin').focus()"><label for="pin">الرقم السري</label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" onkeydown="event.key=='Enter'&&login()"><button class="b" id="lb" onclick="login()">تسجيل الدخول</button><p class="m">أول مرة؟ الرقم السري المبدئي يسلّمه لك المشرف.</p></div><div class="card"><label for="vn">التحقق من شهادة</label><input id="vn" placeholder="LF-2026-0001" value="${E(VQ)}"><button class="b o" onclick="verify()">تحقق</button><p id="vr"></p></div></div></div>`;
 const head=()=>`<header><span class="lp"><img src="${MARK}" alt="Linah Farms" height="32"></span><b>منصة التدريب</b><span class="nm">${E(S.u.name)}</span><button class="b s o" onclick="pinF()">الرقم السري</button><button class="b s o" onclick="logout()">خروج</button></header>`;
-function empPageH(){return ({home:homeH,news:newsH,tips:tipsH}[S.etab||'home'])()}
+function empPageH(){return ({home:homeH,news:newsH,tips:tipsH,profile:profileH}[S.etab||'home'])()}
 function newsH(){
 const sites = [
-  {title:'منصة التعلم الإلكتروني لمنظمة الفاو', url:'https://elearning.fao.org/', desc:'دورات تدريبية مجانية في الزراعة والأمن الغذائي'},
-  {title:'وزارة الزراعة واستصلاح الأراضي - مصر', url:'https://www.agr-egypt.gov.eg/', desc:'أخبار وتدريب زراعي رسمي'},
-  {title:'المركز الدولي للزراعة في المناطق الجافة (إيكاردا)', url:'https://www.icarda.org/', desc:'بحوث وتدريب في الزراعة الجافة'},
-  {title:'منصة تدريب زراعي عربي', url:'https://www.agriculture.eg/', desc:'موارد ومقالات تدريبية زراعية'},
-  {title:'FAO Agriculture Training Resources', url:'https://www.fao.org/agriculture/en/', desc:'موارد دولية للتدريب الزراعي'}
+  {title:'منصة التعلم الإلكتروني لمنظمة الفاو', url:'https://elearning.fao.org/', desc:'دورات مجانية في الزراعة والأمن الغذائي وإدارة الموارد', img: FARM_IMAGES.dates},
+  {title:'وزارة الزراعة واستصلاح الأراضي', url:'https://www.agr-egypt.gov.eg/', desc:'أخبار رسمية وتدريب زراعي مصري', img: FARM_IMAGES.products},
+  {title:'إيكاردا - المركز الدولي للزراعة في المناطق الجافة', url:'https://www.icarda.org/', desc:'بحوث وتدريب متقدم في الزراعة الجافة والواحات', img: FARM_IMAGES.box},
+  {title:'FAO Agriculture & Food Security', url:'https://www.fao.org/agriculture/en/', desc:'موارد دولية شاملة للتدريب الزراعي', img: FARM_IMAGES.hero},
+  {title:'معهد بحوث البساتين - مصر', url:'https://www.arc.sci.eg/', desc:'تدريب وأبحاث زراعية متخصصة', img: FARM_IMAGES.nutjools},
+  {title:'منصة تدريب إداري زراعي', url:'https://www.fao.org/capacity-development/en/', desc:'برامج تطوير القدرات الإدارية والقيادية في القطاع الزراعي', img: FARM_IMAGES.dates}
 ];
-return `<div class="gr">${sites.map(s=>`<div class="card"><b>${E(s.title)}</b><p class="m">${E(s.desc)}</p><a href="${s.url}" target="_blank" rel="noopener" class="b s o">زيارة الموقع</a></div>`).join('')}</div>`}
+return `<div class="gr">${sites.map(s=>`<div class="card" style="overflow:hidden">
+  ${s.img?`<img src="${s.img}" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:8px 8px 0 0;margin:-12px -14px 10px -14px">`:''}
+  <b>${E(s.title)}</b><p class="m">${E(s.desc)}</p>
+  <a href="${s.url}" target="_blank" rel="noopener" class="b s o">زيارة الموقع</a>
+</div>`).join('')}</div>`}
 function newsForm(){form('نشر خبر جديد',[['title','العنوان','text'],['body','النص','area'],['img','صورة (اختياري)','img']],{title:'',body:'',img:''},
 async x=>{let img=x.img;if(img){img=await shrinkImg(img)}const r=await rpc('app_add_news',{p_token:S.t,p_title:x.title,p_body:x.body,p_image:img||null});return r.ok?0:'تعذر النشر'})}
 async function delNews(id,title){confirmBox(`حذف الخبر "${title}"؟`,`delNewsReal('${id}')`)}
@@ -160,7 +174,7 @@ const soon=expiring.filter(x=>x.exp<=new Date(Date.now()+30*864e5).toISOString()
 const expired=soon.filter(x=>x.exp<today);
 const dueSoon=soon.filter(x=>x.exp>=today);
 const overdue=overdueCourses(u);
-return`<section class="card hero" style="background:var(--gb)"><div><h2>${E(u.name)}</h2><p>الكود ${E(u.code)}، ${E(jobOf(u))}، ${E(u.dept)}، ${E(u.sector)}</p></div><span class="lp"><img src="${MARK}" alt="Linah Farms" height="40"></span></section>${nb?`<div class="key noprint" style="cursor:pointer" onclick="markSeen();R()">🔔 توجد ${nb} دورة جديدة أو محدَّثة متاحة لك — اضغط للتعليم كمُشاهَد</div>`:''}
+return`<section class="card hero" style="background:linear-gradient(120deg,rgba(10,42,74,.7),rgba(10,42,74,.5)),url(https://linahfarms.com/cdn/shop/files/extra_juicy_4.jpg?v=1729784235) center/cover"><div><h2>${E(u.name)}</h2><p>الكود ${E(u.code)}، ${E(jobOf(u))}، ${E(u.dept)}، ${E(u.sector)}</p></div><span class="lp"><img src="${MARK}" alt="Linah Farms" height="40"></span></section>${nb?`<div class="key noprint" style="cursor:pointer" onclick="markSeen();R()">🔔 توجد ${nb} دورة جديدة أو محدَّثة متاحة لك — اضغط للتعليم كمُشاهَد</div>`:''}
 ${expired.length?`<div class="card" style="border-color:var(--er)"><b class="er">⚠ شهادات منتهية تحتاج تجديدًا فورًا:</b>${expired.map(x=>`<p>${E(cd(x.no).c.t)} — انتهت في ${x.exp}</p>`).join('')}</div>`:''}
 ${dueSoon.length?`<div class="card"><b>⏳ شهادات تقترب من الانتهاء (خلال 30 يومًا):</b>${dueSoon.map(x=>`<p>${E(cd(x.no).c.t)} — تنتهي في ${x.exp}</p>`).join('')}</div>`:''}
 ${overdue.length?`<div class="card" style="border-color:#e0a030"><b style="color:#e0a030">⏰ دورات متأخرة عليك إنهاؤها:</b>${overdue.map(c=>`<p>${E(c.t)} (${pc(u.code,c)}%)</p>`).join('')}</div>`:''}
@@ -168,7 +182,13 @@ ${overdue.length?`<div class="card" style="border-color:#e0a030"><b style="color
 <h3>إنجازك الأسبوعي (آخر 7 أيام)</h3><div class="kp">${(()=>{const since=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const lz=(db.lpRaw||[]).filter(x=>x.code==u.code&&x.dt>=since).length;const az=(db.atRaw||[]).filter(x=>x.code==u.code&&x.dt>=since).length;const cz=cs.filter(x=>x.dt>=since).length;return k('دروس أُنجزت',lz)+k('اختبارات أُديت',az)+k('شهادات جديدة',cz)})()}</div>
 <h3>مسارك الوظيفي</h3><div class="card"><div class="sc" style="display:flex;gap:6px;padding-bottom:6px">${LV.map((name,i)=>`<div style="flex:none;text-align:center;min-width:84px"><div style="width:28px;height:28px;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:12px;background:${i<u.lv?'var(--au)':i==u.lv?'var(--gb)':'transparent'};border:2px solid ${i<=u.lv?'var(--au)':'var(--b)'};color:${i<u.lv?'#0d3d22':'var(--t)'}">${i<u.lv?'✓':i+1}</div><p class="m" style="font-size:11px">${E(name)}</p></div>`).join('')}</div></div>
 <h3>دوراتي</h3><input class="noprint" placeholder="ابحث في دوراتك" value="${E(S.cq||'')}" oninput="S.cq=this.value;R()">
-<div class="gr">${a.filter(c=>!S.cq||c.t.includes(S.cq)).map((c,i)=>{i=a.indexOf(c);const pre=c.pre&&db.c.find(x=>x.id==c.pre);const locked=pre&&!db.certs.some(x=>x.code==u.code&&x.cid===pre.id);return `<div class="card">${locked?`<p class="m">🔒 يتطلب اجتياز: ${E(pre.t)} أولًا</p>`:''}<b>${E(c.t)}</b><div class="bar"><i style="width:${ps[i]}%"></i></div><p class="m">${ps[i]}%</p><button class="b s ${!ps[i]&&!locked?'startb':''}" ${locked?'disabled':''} onclick="openC('${c.id}')">${locked?'مغلقة':ps[i]==100?'عرض':ps[i]?'متابعة':'ابدأ'}</button></div>`}).join('')||'<p class="m">لا توجد دورات لمستواك الوظيفي بعد.</p>'}</div>
+<div class="gr">${a.filter(c=>!S.cq||c.t.includes(S.cq)).map((c,i)=>{i=a.indexOf(c);const pre=c.pre&&db.c.find(x=>x.id==c.pre);const locked=pre&&!db.certs.some(x=>x.code==u.code&&x.cid===pre.id);return `<div class="card" style="text-align:center">${locked?`<p class="m">🔒 يتطلب: ${E(pre.t)}</p>`:''}
+<img src="${FARM_IMAGES.dates}" style="width:72px;height:72px;border-radius:16px;object-fit:cover;margin:0 auto 8px;display:block">
+<b>${E(c.t)}</b>
+<div class="bar"><i style="width:${ps[i]}%"></i></div>
+<p class="m">${ps[i]}%</p>
+<button class="b s ${!ps[i]&&!locked?'startb':''}" ${locked?'disabled':''} onclick="openC('${c.id}')">${locked?'مغلقة':ps[i]==100?'عرض':ps[i]?'متابعة':'ابدأ'}</button>
+</div>`}).join('')||'<p class="m">لا توجد دورات لمستواك الوظيفي بعد.</p>'}</div>
 <button class="b s o noprint" onclick="print()">طباعة سجلي</button>
 <h3>شهاداتي</h3>${cs.map(x=>`<div class="card row"><span>${E(cd(x.no).c.t)} <span class="m">${x.no}</span></span><button class="b s" onclick="showCert('${x.no}')">عرض</button></div>`).join('')||'<p class="m">ستظهر شهاداتك هنا بعد اجتياز الدورات.</p>'}<h3>ملاحظاتك ومقترحاتك</h3><div class="card"><textarea id="fbmsg" placeholder="اكتب أي ملاحظة أو مقترح لإدارة التدريب"></textarea><button class="b s" onclick="sendFb()">إرسال</button></div>`}
 function openC(id){S.c=id;S.ex=null;try{const seen=JSON.parse(localStorage.getItem(seenKey())||'{}');seen[id]=1;localStorage.setItem(seenKey(),JSON.stringify(seen))}catch(e){}R();scrollTo(0,0)}
@@ -285,9 +305,10 @@ function bottomNav(){
   if(isEmp){
     items = [
       {id:'home', icon:'🏠', label:'الرئيسية', tab:'etab'},
-      {id:'news', icon:'📰', label:'آخر الأخبار', tab:'etab'},
+      {id:'news', icon:'📰', label:'الأخبار', tab:'etab'},
       {id:'tips', icon:'💡', label:'نصائح', tab:'etab'},
-      {id:'logout', icon:'🚪', label:'تسجيل خروج', action:'logout'}
+      {id:'profile', icon:'👤', label:'ملفي', tab:'etab'},
+      {id:'logout', icon:'🚪', label:'خروج', action:'logout'}
     ];
   } else {
     const T = S.u.role=='Trainer' ? [['rep','📊','التقارير'],['crs','📚','الدورات'],['att','✅','الحضور'],['news','📰','الأخبار'],['tips','💡','نصائح']] 
@@ -302,6 +323,40 @@ function bottomNav(){
     const onclick = it.action ? it.action+'()' : `S.${it.tab}='${it.id}';R()`;
     return `<button class="${isOn?'on':''}" onclick="${onclick}"><span class="icon">${it.icon}</span><span>${it.label}</span></button>`;
   }).join('')}</nav>`;
+}
+
+function profileH(){
+  const u = S.u;
+  const a = avail(u);
+  const cs = db.certs.filter(x=>x.code==u.code);
+  const prog = comp(u);
+  return `<section class="card" style="text-align:center;padding:20px">
+    <div style="position:relative;display:inline-block">
+      <img src="${u.av||MARK}" alt="صورة شخصية" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--au)">
+      <span class="lp av" onclick="$('#avf2').click()" style="position:absolute;bottom:0;right:0;background:var(--au);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer">✎</span>
+      <input id="avf2" type="file" accept="image/*" style="display:none" onchange="pickAvatar(this)">
+    </div>
+    <h2>${E(u.name)}</h2>
+    <p class="m">الكود: ${E(u.code)} | ${E(jobOf(u))}</p>
+    <p class="m">${E(u.dept||'—')} — ${E(u.sector||'—')}</p>
+    <div class="kp" style="margin-top:16px">
+      ${k('نسبة الإتمام', prog+'%')}
+      ${k('الشهادات', cs.length)}
+      ${k('الدورات المتاحة', a.length)}
+    </div>
+  </section>
+  <h3>شهاداتي</h3>
+  <div class="gr">${cs.map(x=>`<div class="card" style="text-align:center"><div style="font-size:32px">🏆</div><b>${E(cd(x.no).c.t)}</b><p class="m">${x.no} — ${x.sc}%</p><button class="b s" onclick="showCert('${x.no}')">عرض</button></div>`).join('')||'<p class="m">لا شهادات بعد</p>'}</div>
+  <h3>دوراتي</h3>
+  <div class="gr">${a.map(c=>{
+    const p = pc(u.code,c);
+    return `<div class="card" style="text-align:center;cursor:pointer" onclick="openC('${c.id}')">
+      <img src="${FARM_IMAGES.dates}" style="width:60px;height:60px;border-radius:12px;object-fit:cover;margin:0 auto 8px">
+      <b>${E(c.t)}</b>
+      <div class="bar"><i style="width:${p}%"></i></div>
+      <p class="m">${p}%</p>
+    </div>`;
+  }).join('')||'<p class="m">لا دورات متاحة</p>'}</div>`;
 }
 function R(){$('#app').innerHTML=S.u?`<div class="print-head"><img src="${LOCKUP}" alt="Linah Farms"><b>منصة التدريب</b></div>`+head()+'<main>'+(S.c?courseH():S.u.role=='Employee'?empPageH():adminH())+'</main>'+bottomNav()+FT+S.m:loginH()+FT;
 if(S.cn&&window.QRCode&&$('#qr')){const{x,u,c}=cd(S.cn);new QRCode($('#qr'),{text:location.origin+location.pathname+'?verify='+x.no,width:90,height:90})}
