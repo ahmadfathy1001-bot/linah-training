@@ -434,61 +434,49 @@ async function delTipReal(id){try{await rpc('app_delete_tip',{p_token:S.t,p_id:i
 async function shrinkImg(dataUrl){return new Promise(res=>{const img=new Image();img.onload=()=>{const s=640;const sc=Math.min(1,s/Math.max(img.width,img.height));const w=img.width*sc,hh=img.height*sc;const cv=document.createElement('canvas');cv.width=w;cv.height=hh;cv.getContext('2d').drawImage(img,0,0,w,hh);res(cv.toDataURL('image/jpeg',.75))};img.src=dataUrl})}
 function homeH(){
   const firstName = ((S.u&&S.u.name)||'').split(' ')[0] || 'زميلنا';
-  const centers = [
-    {title:'منصة الفاو للتعلم الإلكتروني',url:'https://elearning.fao.org/',desc:'دورات ومواد تعليمية في الزراعة والأمن الغذائي',icon:'🎓',tag:'دورات تدريبية'},
-    {title:'FAO – الزراعة',url:'https://www.fao.org/agriculture/en/',desc:'معلومات وتقارير وموارد فنية للقطاع الزراعي',icon:'🌾',tag:'مصدر دولي'},
-    {title:'إيكاردا ICARDA',url:'https://www.icarda.org/',desc:'أبحاث وموارد عن الزراعة الجافة وإدارة المياه',icon:'🏜️',tag:'أبحاث زراعية'},
-    {title:'منظمة الأغذية والزراعة – تنمية القدرات',url:'https://www.fao.org/capacity-development/en/',desc:'مواد لتطوير المهارات الفنية والإدارية والقيادية',icon:'📈',tag:'تطوير مهني'},
-    {title:'المركز الدولي لتحسين الذرة والقمح CIMMYT',url:'https://www.cimmyt.org/',desc:'أبحاث وابتكارات في المحاصيل والنظم الزراعية',icon:'🌱',tag:'بحث وابتكار'},
-    {title:'المركز المصري الدولي للزراعة',url:'https://eica.gov.eg/',desc:'تحقق من البرامج التدريبية المتاحة عبر الموقع الرسمي',icon:'🇪🇬',tag:'تدريب زراعي'}
-  ];
-  const news = [
-    {title:'أخبار منظمة الفاو',url:'https://www.fao.org/newsroom/en/',desc:'أخبار وتقارير دولية عن الغذاء والزراعة',icon:'📰'},
-    {title:'المركز الدولي للبحوث الزراعية في المناطق الجافة',url:'https://www.icarda.org/media/news',desc:'أخبار الأبحاث والمشروعات الزراعية',icon:'🔬'},
-    {title:'وزارة الزراعة واستصلاح الأراضي المصرية',url:'https://www.agr-egypt.gov.eg/',desc:'الموقع الرسمي للوزارة والأخبار والإعلانات',icon:'🏛️'},
-    {title:'أبحاث ومنشورات النخيل والتمور – الفاو',url:'https://www.fao.org/',desc:'ابحث عن أحدث الموارد المتعلقة بالنخيل والتمور',icon:'🌴'}
-  ];
-  const videos = [
-    {title:'فيديوهات تعليمية من الفاو',url:'https://www.youtube.com/@FAOoftheUN',desc:'محتوى مرئي عن الزراعة والغذاء والتنمية'},
-    {title:'فيديوهات إيكاردا',url:'https://www.youtube.com/results?search_query=ICARDA+agriculture+training',desc:'شروحات وندوات عن الزراعة في المناطق الجافة'},
-    {title:'تدريب النخيل والتمور',url:'https://www.youtube.com/results?search_query=date+palm+production+training',desc:'فيديوهات تعليمية عن خدمة النخيل وإنتاج التمور'}
-  ];
-  const linkCard = x => `<a href="${x.url}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:flex-start;gap:12px;padding:13px;border:1px solid var(--b);border-radius:12px;background:var(--c);color:inherit;text-decoration:none">
-    <span style="font-size:25px">${x.icon||'🔗'}</span><span style="flex:1;min-width:0"><b style="display:block;font-size:14px">${E(x.title)}</b><span class="m">${E(x.desc)}</span>${x.tag?`<span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--bg);color:var(--m);margin-top:5px">${E(x.tag)}</span>`:''}</span><span style="color:var(--au)">↗</span>
-  </a>`;
   return `<div style="margin:-14px;padding:0 0 24px">
     <div class="hero-modern">
       <div style="font-size:12px;opacity:.85;letter-spacing:1px">LINAH FARMS · LEARNING</div>
-      <h2 style="color:#fff;margin:4px 0 0;font-size:26px;font-weight:700">Welcome, ${E(firstName)}</h2>
-      <p style="margin:4px 0 0;font-size:14px;opacity:.9">Continue learning and grow your skills</p>
+      <h2 style="color:#fff;margin:4px 0 0;font-size:26px;font-weight:700">أهلًا ${E(firstName)}</h2>
+      <p style="margin:4px 0 0;font-size:14px;opacity:.9">مرحبًا بك في منصة تدريب لينة فارمز</p>
     </div>
-    
-    <div class="card" style="margin:12px 12px 0">
-      <h3 style="margin-top:0">📊 تقدمك التدريبي</h3>
-      <div class="kp">
-        <div class="card" style="margin:0"><div class="n">${comp(S.u)}%</div><div class="m">نسبة الإتمام</div></div>
-        <div class="card" style="margin:0"><div class="n">${db.certs.filter(x=>x.code===S.u.code).length}</div><div class="m">الشهادات</div></div>
-        <div class="card" style="margin:0"><div class="n">${avail(S.u).length}</div><div class="m">دورات متاحة</div></div>
+
+    <div style="padding:12px">
+      <div class="card" style="overflow:hidden;margin-bottom:12px">
+        <div style="height:160px;background:linear-gradient(135deg,#2e7d32,#1b5e20);display:flex;align-items:center;justify-content:center;color:#fff;font-size:48px">🌴</div>
+        <div style="padding:14px">
+          <h3 style="margin:0 0 8px;color:var(--g)">مزرعة الواحات البحرية</h3>
+          <p style="margin:4px 0;line-height:1.7">في عام <b>1997</b> بدأت الرحلة على أرض صحراوية في <b>الواحات البحرية</b> (370 كم غرب القاهرة). اليوم تمتد المزرعة على <b>أكثر من 3000 فدان</b>، ومستهدف زراعة <b>100,000 نخلة</b>.</p>
+          <p style="margin:4px 0">تم زراعة حوالي <b>30,000 نخلة</b> حتى الآن، وأشهر الأصناف: <b>المجدول</b> و<b>البرحي</b>.</p>
+        </div>
       </div>
-      <p class="m" style="margin-top:8px">استمر في إكمال الدروس والاختبارات للحصول على شهاداتك.</p>
-    </div>
-<div style="padding:0 12px">
+
+      <div class="card" style="overflow:hidden;margin-bottom:12px">
+        <div style="height:140px;background:linear-gradient(135deg,#0a66c2,#004182);display:flex;align-items:center;justify-content:center;color:#fff;font-size:42px">🌾</div>
+        <div style="padding:14px">
+          <h3 style="margin:0 0 8px;color:var(--g)">مزرعة المنيا</h3>
+          <p style="margin:4px 0;line-height:1.7">مزرعة المنيا تمتد على <b>200 فدان</b>، وهي جزء من خطة التوسع لزراعة المزيد من النخيل عالي الجودة.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">📊 تقدمك التدريبي</h3>
+        <div class="kp">
+          <div class="card" style="margin:0"><div class="n">${comp(S.u)}%</div><div class="m">نسبة الإتمام</div></div>
+          <div class="card" style="margin:0"><div class="n">${db.certs.filter(x=>x.code===S.u.code).length}</div><div class="m">الشهادات</div></div>
+          <div class="card" style="margin:0"><div class="n">${avail(S.u).length}</div><div class="m">دورات متاحة</div></div>
+        </div>
+        <p class="m" style="margin-top:10px">استمر في التعلم وطور مهاراتك مع فريق لينة فارمز.</p>
+      </div>
+
       <section class="card" style="margin-top:12px">
-        <h3 style="margin-top:0">📰 أخبار ومصادر زراعية</h3>
-        <p class="m">روابط مباشرة لمتابعة الأخبار والتقارير الزراعية من مصادرها. افتح الرابط للاطلاع على أحدث ما تنشره الجهة.</p>
-        <div style="display:grid;gap:9px">${news.map(linkCard).join('')}</div>
+        <h3 style="margin-top:0">🎓 مصادر التعلم</h3>
+        <p class="m">منصات ودورات خارجية لتطوير مهاراتك الزراعية والإدارية.</p>
+        <div style="display:grid;gap:9px">
+          <a href="https://elearning.fao.org/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--b);border-radius:10px;text-decoration:none;color:inherit"><span>🎓</span><span><b>منصة الفاو للتعلم</b><br><span class="m">دورات زراعية مجانية</span></span></a>
+          <a href="https://www.icarda.org/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--b);border-radius:10px;text-decoration:none;color:inherit"><span>🏜️</span><span><b>إيكاردا ICARDA</b><br><span class="m">أبحاث الزراعة الجافة</span></span></a>
+        </div>
       </section>
-      <section class="card">
-        <h3 style="margin-top:0">🎓 منصات التدريب والتعلم</h3>
-        <p class="m">منصات ومراكز تساعدك على تطوير مهاراتك الفنية والإدارية. قد تتطلب بعض الدورات التسجيل.</p>
-        <div style="display:grid;gap:9px">${centers.map(linkCard).join('')}</div>
-      </section>
-      <section class="card">
-        <h3 style="margin-top:0">▶️ فيديوهات تعليمية</h3>
-        <p class="m">قنوات ونتائج بحث تعليمية لمتابعة الشروحات والندوات الزراعية.</p>
-        <div style="display:grid;gap:9px">${videos.map(linkCard).join('')}</div>
-      </section>
-      <p class="m" style="text-align:center;padding:4px 8px">يتم فتح الأخبار والفيديوهات من المواقع الأصلية. تحديث المحتوى هنا تلقائياً يحتاج إلى ربط بمصدر أخبار أو خدمة خارجية.</p>
     </div>
   </div>`;
 }
